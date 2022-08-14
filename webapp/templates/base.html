@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Tag Suggestion Deployment </title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> 
+</head>
+
+<body style="background: rgb(83, 56, 56)">
+ <div class="login">
+	<h1> Tags Suggestion</h1>
+
+     <!-- Main Input For Receiving Query to our ML -->
+
+     <form action="{{ url_for('predict')}}"method="post">
+        <textarea type="text" name="Enter the review here" cols="40" rows="5" required="required"/> </textarea> 
+        <button type="submit" class="btn btn-primary btn-block btn-large">Predict Tags</button>
+    </form>
+
+
+
+   <br>
+   <br>
+   {{ prediction_text }} 
+   <br>
+   <br>
+
+ </div>
+</body>
+</html>
