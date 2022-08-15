@@ -14,15 +14,15 @@
 
      <form action="{{ url_for('predict')}}"method="post">
         <textarea type="text" name="Enter the review here" cols="40" rows="5" required="required"/> </textarea> 
-        <button type="submit" class="btn btn-primary btn-block btn-large">Predict Tags</button>
+        <button type="submit" class="btn btn-primary btn-block btn-large">Click for suggestion</button>
     </form>
 
 
 
    <br>
+   The best suited tag is {{ suggested_tag }} 
    <br>
-   {{ prediction_text }} 
-   <br>
+   with probability of {{ predicted_prob }}
    <br>
 
  </div>

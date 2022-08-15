@@ -34,7 +34,7 @@ def predict():
     data.columns = ['new_review']
 
     data['new_review'] = data['new_review'].apply(strip_tags)
-    data['new_review'] = [BeautifulSoup(text,"lxml").get_text() for text in data['new_review']]
+#    data['new_review'] = [BeautifulSoup(text,"lxml").get_text() for text in data['new_review']]
     data['review_pc'] = data['new_review'].apply(lambda x : pre_cleaner(x))
     data['review_pc'] = data['review_pc'].apply(lambda x : transform_bow_fct(x))
     data['review_lm'] = data['review_pc'].apply(lambda x : lemmatizer_spacy(x))
@@ -50,15 +50,16 @@ def predict():
     )
 
     predicted_prob = loaded_w2v_model.predict(eval_padded)
-
-    tresh = 0.3
-    predicted_prob[predicted_prob >= tresh] = 1
-    predicted_prob[predicted_prob < tresh] = 0
+    max_prob = predicted_prob[0,np.argmax(predicted_prob)]
+    
+    tag_indx = np.where(predicted_prob>=max_prob, 1, 0)
+    max_prob = round(100 *max_prob, 2)
 
     # Inverse binarizer transform
-    y_test_pred_inversed = loaded_w2v_mlb.inverse_transform(predicted_prob)
+    suggested_tag = loaded_w2v_mlb.inverse_transform(tag_indx) # .reshape(1,nbr_tags)
+    suggested_tag = "'" + str(suggested_tag[0][0]) + "'"
     
-    return render_template('base.html', prediction_text=y_test_pred_inversed[0])
+    return render_template('base.html', suggested_tag=suggested_tag, predicted_prob=max_prob)
 
 if __name__ == "__main__":
     app.run(debug=True, host="127.0.0.1", port=5002, threaded=True)
