@@ -44,3 +44,9 @@ textarea {
 	-ms-transition: box-shadow .5s ease;
 	transition: box-shadow .5s ease;
 }
+a {
+	color: green;
+	background-color: transparent;
+	text-decoration: none;
+  }
+  
