@@ -1,30 +1,23 @@
-<!DOCTYPE html>
-<html >
-<head>
-  <meta charset="UTF-8">
-  <title>Tag Suggestion Deployment </title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> 
-</head>
+{% extends 'layouts.html' %}
 
-<body style="background: rgb(83, 56, 56)">
- <div class="login">
-	<h1> Tags Suggestion</h1>
+{% block body %} 
 
-     <!-- Main Input For Receiving Query to our ML -->
+  <div class="login">
 
-     <form action="{{ url_for('predict')}}"method="post">
-        <textarea type="text" name="Enter the review here" cols="40" rows="5" required="required"/> </textarea> 
-        <button type="submit" class="btn btn-primary btn-block btn-large">Click for suggestion</button>
-    </form>
+   <h1> Tags Suggestion</h1>
+ 
+  <form action="{{ url_for('predict')}}"method="post">
+      <textarea type="text" name="Enter the review here" cols="40" rows="5" required="required"/> </textarea> 
+      <button type="submit" class="btn btn-primary btn-block btn-large">Click for suggestion</button>
+  </form>
+  
+  <br>
+  The best suited tag is : {{ suggested_tag }} 
+  <br>
+  with probability of : {{ predicted_prob }}
+  <br>
+ 
+  </div>
+ 
 
-
-
-   <br>
-   The best suited tag is {{ suggested_tag }} 
-   <br>
-   with probability of {{ predicted_prob }}
-   <br>
-
- </div>
-</body>
-</html>
+{% endblock %}	
