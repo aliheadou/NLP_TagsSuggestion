@@ -9,18 +9,18 @@ from functions import *
 
 # load from models
 # binarizer
-filename_mlb = 'models/w2v_mlb.pickle'
+filename_mlb   = 'models/w2v_mlb.pickle'
 loaded_w2v_mlb = pickle.load(open(filename_mlb, 'rb'))
 # tokenizer
-filename_tokenizer = 'models/w2v_tokenizer.pickle'
+filename_tokenizer   = 'models/w2v_tokenizer.pickle'
 loaded_w2v_tokenizer = pickle.load(open(filename_tokenizer, 'rb'))
 # model
-filename_model = 'models/best_w2v_maxlen64.hdf5'
+filename_model   = 'models/best_w2v_maxlen64.hdf5'
 loaded_w2v_model = load_model(filename_model)
-
 
 # Create the app object
 app = Flask(__name__)
+
 # Define predict function
 @app.route('/')
 def home():
@@ -54,7 +54,7 @@ def predict():
     )
 
     predicted_prob = loaded_w2v_model.predict(eval_padded)
-    max_prob = predicted_prob[0,np.argmax(predicted_prob)]
+    max_prob       = predicted_prob[0,np.argmax(predicted_prob)]
     
     tag_indx = np.where(predicted_prob>=max_prob, 1, 0)
     max_prob = round(100 *max_prob, 2)
@@ -62,8 +62,17 @@ def predict():
     # Inverse binarizer transform
     suggested_tag = loaded_w2v_mlb.inverse_transform(tag_indx) # .reshape(1,nbr_tags)
     suggested_tag = "'" + str(suggested_tag[0][0]) + "'"
-    
-    return render_template('base.html', suggested_tag=suggested_tag, predicted_prob=max_prob)
+
+    if max_prob <30:
+        print('---------------------------------- moins que 0.3')
+        message = ["All predicted probabilities are lower than 30%.", 
+                   "Please add more keywords."]
+        return render_template('base.html', message1=message[0], message2=message[1])
+    else:
+        print('---------------------------------- plus que 0.3')
+        message = ["The best suited tag is : " + suggested_tag+". ", 
+                   "With probability of : " + str(max_prob) +"."] 
+        return render_template('base.html', message1=message[0], message2=message[1])
 
 if __name__ == "__main__":
     app.run(debug=True, host="127.0.0.1", port=5002, threaded=True)

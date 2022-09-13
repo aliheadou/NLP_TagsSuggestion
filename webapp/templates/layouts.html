@@ -4,9 +4,17 @@
     <meta charset="UTF-8">
     <title>Tag Suggestion Deployment </title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> 
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">  -->
     </head>
 
     <body style="background: rgb(83, 56, 56)">
+        <header>
+            <nav>
+                <ul style = "padding-right: 2%;" class = "main-nav">
+                    <a href ="/">Refresh</a>             
+                </ul>     
+            </nav>
+        </header>
 
         {% block body %}{% endblock %}
 
