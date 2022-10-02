@@ -45,7 +45,7 @@ def predict():
 
     maxSeq_len = loaded_w2v_model.input_shape[1]
 
-    eval_sequences = loaded_w2v_tokenizer.texts_to_sequences(data.review_lm) 
+    eval_sequences = loaded_w2v_tokenizer.texts_to_sequences(data.review_lm)
     eval_padded = pad_sequences(
         eval_sequences, 
         maxlen=maxSeq_len, 
